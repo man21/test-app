@@ -3,8 +3,9 @@ kind: Deployment
 metadata:
   # Unique key of the Deployment instance
   name: test-project
+  namespace: default # Add the namespace here
 spec:
-  # 3 Pods should exist at all times.
+  # 2 Pods should exist at all times.
   replicas: 2
   selector:
     matchLabels:
@@ -28,9 +29,10 @@ apiVersion: v1
 metadata:
   # Unique key of the Service instance
   name: test-app
+  namespace: default # Add the namespace here
 spec:
   ports:
-    # Accept traffic sent to port 3001
+    # Accept traffic sent to port 3000
     - name: http
       port: 3000
       targetPort: 3000
