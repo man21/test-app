@@ -20,7 +20,7 @@ spec:
       containers:
       - name: test-app
         # Run this image
-        image: mandeep2022/test-app:4
+        image: mandeep2022/test-app:5
       restartPolicy: Always
       terminationGracePeriodSeconds: 60  # Wait for 60 seconds before forceful termination
       dnsPolicy: ClusterFirst # Default setting for most Pods
@@ -34,9 +34,6 @@ spec:
       maxSurge: 10%
   revisionHistoryLimit: 10
   progressDeadlineSeconds: 600
-
-
-
 
 ---
 
