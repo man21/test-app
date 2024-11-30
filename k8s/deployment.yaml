@@ -6,7 +6,7 @@ metadata:
   namespace: default # Add the namespace here
 spec:
   # 2 Pods should exist at all times.
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: test-app
@@ -20,7 +20,7 @@ spec:
       containers:
       - name: test-app
         # Run this image
-        image: mandeep2022/test-app:5
+        image: mandeep2022/test-app:6
       restartPolicy: Always
       terminationGracePeriodSeconds: 60  # Wait for 60 seconds before forceful termination
       dnsPolicy: ClusterFirst # Default setting for most Pods
@@ -45,14 +45,10 @@ metadata:
   namespace: default # Add the namespace here
 spec:
   ports:
-    - protocol: TCP
-      port: 443
-      targetPort: 5000
-  # ports:
-  #   # Accept traffic sent to port 3000
-  #   - name: http
-  #     port: 3000
-  #     targetPort: 3000
+    # Accept traffic sent to port 3000
+    - name: http
+      port: 3000
+      targetPort: 3000
   selector:
     # Loadbalance traffic across Pods matching
     # this label selector
@@ -60,5 +56,4 @@ spec:
   # Create an HA proxy in the cloud provider
   # with an External IP address - *Only supported
   # by some cloud providers*
-  # type: LoadBalancer
-  type: ClusterIP
+  type: LoadBalancer
