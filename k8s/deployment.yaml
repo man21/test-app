@@ -6,7 +6,7 @@ metadata:
   namespace: default # Add the namespace here
 spec:
   # 2 Pods should exist at all times.
-  replicas: 2
+  replicas: 6
   selector:
     matchLabels:
       app: test-app
@@ -21,6 +21,22 @@ spec:
       - name: test-app
         # Run this image
         image: mandeep2022/test-app:4
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60  # Wait for 60 seconds before forceful termination
+      dnsPolicy: ClusterFirst # Default setting for most Pods
+      securityContext: {}
+
+      # schedulerName: default-scheduler  #(Default)
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 10%
+      maxSurge: 10%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+
+
+
 
 ---
 
