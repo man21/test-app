@@ -6,7 +6,7 @@ metadata:
   namespace: default # Add the namespace here
 spec:
   # 2 Pods should exist at all times.
-  replicas: 6
+  replicas: 1
   selector:
     matchLabels:
       app: test-app
