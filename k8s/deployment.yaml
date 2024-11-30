@@ -21,6 +21,7 @@ spec:
       - name: test-app
         # Run this image
         image: mandeep2022/test-app:latest
+        imagePullPolicy: Always  # Always pulls the latest image
       restartPolicy: Always
       terminationGracePeriodSeconds: 60  # Wait for 60 seconds before forceful termination
       dnsPolicy: ClusterFirst # Default setting for most Pods
