@@ -19,7 +19,7 @@ spec:
       containers:
       - name: test-app
         # Run this image
-        image: mandeep2022/test-app:3
+        image: mandeep2022/test-app:latest
 
 ---
 
