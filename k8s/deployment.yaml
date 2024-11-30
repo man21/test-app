@@ -45,10 +45,14 @@ metadata:
   namespace: default # Add the namespace here
 spec:
   ports:
-    # Accept traffic sent to port 3000
-    - name: http
-      port: 3000
-      targetPort: 3000
+    - protocol: TCP
+      port: 443
+      targetPort: 5000
+  # ports:
+  #   # Accept traffic sent to port 3000
+  #   - name: http
+  #     port: 3000
+  #     targetPort: 3000
   selector:
     # Loadbalance traffic across Pods matching
     # this label selector
@@ -56,4 +60,5 @@ spec:
   # Create an HA proxy in the cloud provider
   # with an External IP address - *Only supported
   # by some cloud providers*
-  type: LoadBalancer
+  # type: LoadBalancer
+  type: ClusterIP
