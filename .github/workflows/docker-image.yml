@@ -29,3 +29,17 @@ jobs:
     # Push the Docker image
     - name: Push the Docker image
       run: docker push mandeep2022/test-app:latest
+
+    # Set up kubectl for Kubernetes interaction
+    - name: Set up kubectl
+      uses: actions/setup-kubectl@v3
+      with:
+        kubeconfig: ${{ secrets.KUBE_CONFIG }}  # Ensure KUBE_CONFIG secret is set
+
+    # Update the Kubernetes deployment to use the new image
+    - name: Update Kubernetes Deployment Image with `:latest`
+      run: kubectl set image deployment/my-deployment my-container=mandeep2022/test-app:latest
+
+    # Trigger a rolling restart to update the pods
+    - name: Trigger a rolling restart of Kubernetes deployment
+      run: kubectl rollout restart deployment/my-deployment
