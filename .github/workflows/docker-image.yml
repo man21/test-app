@@ -24,8 +24,8 @@ jobs:
 
     # Build the Docker image
     - name: Build the Docker image
-      run: docker build --file Dockerfile --tag mandeep2022/test-app:19 .
+      run: docker build --file Dockerfile --tag mandeep2022/test-app:latest .
 
     # Push the Docker image
     - name: Push the Docker image
-      run: docker push mandeep2022/test-app:19
+      run: docker push mandeep2022/test-app:latest
