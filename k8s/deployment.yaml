@@ -20,7 +20,7 @@ spec:
       containers:
       - name: test-app
         # Run this image
-        image: mandeep2022/test-app:11
+        image: mandeep2022/test-app:17
         imagePullPolicy: Always  # Always pulls the latest image
       restartPolicy: Always
       terminationGracePeriodSeconds: 60  # Wait for 60 seconds before forceful termination
