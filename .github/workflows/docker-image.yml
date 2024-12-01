@@ -7,12 +7,21 @@ on:
     branches: [ "master" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
+    # Checkout the code
     - uses: actions/checkout@v4
+
+    # Log in to Docker Hub
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    # Build the Docker image
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag mandeep2022/test-app:latest
+
+    # Push the Docker image
+    - name: Push the Docker image
+      run: docker push mandeep2022/test-app:latest
