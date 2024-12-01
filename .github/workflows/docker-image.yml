@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,10 +22,33 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    # Build the Docker image
+    # Build the Docker image with a unique tag
     - name: Build the Docker image
-      run: docker build --file Dockerfile --tag mandeep2022/test-app:latest .
+      run: |
+        IMAGE_NAME="mandeep2022/test-app"
+        IMAGE_TAG=$(date +%Y%m%d%H%M%S) # Unique timestamp-based tag
+        docker build --file Dockerfile --tag $IMAGE_NAME:$IMAGE_TAG .
+        docker build --file Dockerfile --tag $IMAGE_NAME:latest .
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
-    # Push the Docker image
-    - name: Push the Docker image
-      run: docker push mandeep2022/test-app:latest
+    # Push both the unique and latest tags
+    - name: Push the Docker images
+      run: |
+        IMAGE_NAME="mandeep2022/test-app"
+        docker push $IMAGE_NAME:latest
+        docker push $IMAGE_NAME:${{ env.IMAGE_TAG }}
+
+    # Update the Kubernetes Deployment YAML
+    - name: Update Kubernetes Deployment YAML
+      run: |
+        sed -i "s|mandeep2022/test-app:.*|mandeep2022/test-app:${{ env.IMAGE_TAG }}|g" deployment.yaml
+        git config user.name "github-actions"
+        git config user.email "actions@github.com"
+        git add deployment.yaml
+        git commit -m "Update deployment image to mandeep2022/test-app:${{ env.IMAGE_TAG }}"
+        git push
+
+    # Sync with Argo CD (Optional, if auto-sync is off)
+    - name: Trigger Argo CD Sync
+      run: |
+        argocd app sync test-app --grpc-web --server=${{ secrets.ARGOCD_SERVER }} --auth-token=${{ secrets.ARGOCD_AUTH_TOKEN }}
