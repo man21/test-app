@@ -4,7 +4,6 @@ const port = 3000;
 
 // Route to serve static text
 app.get('/', (req, res) => {
-
   res.send('<h1>Hello, V23 ! </h1>');
 });
 
